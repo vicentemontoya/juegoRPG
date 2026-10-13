@@ -1,25 +1,30 @@
-using System.Collections.Generic; // importar el espacio de nombres (namespace) que contiene las colecciones genéricas.//
-
 namespace juegoRPG
 {
     public partial class Form1 : Form
     {
-        private Personajes? guerrero;
-        private Personajes? enemigo;
+        // ----------------- Estado de la partida -----------------
+
+        private Personaje? jugador;
+        private Personaje? enemigo;
+
         private readonly Random azar = new Random();
-        /// <summary>
-        ///  todo lo que pasa en la pelea y esto creara la historia al final de la plea
-        /// </summary>
         private readonly List<string> bitacora = new List<string>();
-        private bool turnoDelGuerrero = true; // de quien es el turno, si es true es del guerrero, si es false es del enemigo
-        private bool partidaEnCurso = false;  // hay dos personajes peleando?
-        private int numeroDeTurnos = 0;
+
+        private bool turnoDelJugador = true;
+        private bool partidaEnCurso = false;
+        private int numeroDeTurno = 0;
+
+        // Se ponen en true al crear cada personaje y vuelven a false al terminar la pelea,
+        // asi la siguiente partida exige crear a los dos de nuevo.
+        private bool jugadorListo = false;
+        private bool enemigoListo = false;
 
         public Form1()
         {
             InitializeComponent();
             PrepararCombos();
             PrepararCamposDeEstadisticas();
+            PrepararDeslizadores();
             ActualizarBotones();
         }
 
@@ -27,65 +32,145 @@ namespace juegoRPG
 
         private void PrepararCombos()
         {
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTipoJugador.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTipoEnemigo.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            comboBox1.Items.Clear();
-            comboBox2.Items.Clear();
+            cboTipoJugador.Items.Clear();
+            cboTipoEnemigo.Items.Clear();
 
-            foreach (string clase in Personajes.Clases)
+            foreach (string tipo in Personaje.TiposPersonaje)
             {
-                comboBox1.Items.Add(clase);
+                cboTipoJugador.Items.Add(tipo);
             }
 
-            foreach (string clase in Personajes.ClasesEnemigos)
+            foreach (string tipo in Personaje.TiposEnemigo)
             {
-                comboBox2.Items.Add(clase);
+                cboTipoEnemigo.Items.Add(tipo);
             }
         }
 
-        /// <summary>
-        ///  Las estadisticas las escribe el usuario.
-        ///  Cada TextBox muestra en gris el rango permitido como pista.
-        /// </summary>
         private void PrepararCamposDeEstadisticas()
         {
-            TextBox[] niveles = { txtNivelGuerrero, txtNivelEnemigo };
-            TextBox[] ataques = { txtAtaqueGuerrero, txtAtaqueEnemigo };
-            TextBox[] defensas = { txtDefensaGuerrero, txtDefensaEnemigo };
-            TextBox[] vidas = { txtVidaGuerrero, txtVidaEnemigo };
-            TextBox[] pociones = { txtPocionesGuerrero, txtPocionesEnemigo };
+            TextBox[] vidas = { txtVidaJugador, txtVidaEnemigo };
+            TextBox[] ataques = { txtAtaqueJugador, txtAtaqueEnemigo };
+            TextBox[] defensas = { txtDefensaJugador, txtDefensaEnemigo };
 
-            foreach (TextBox caja in niveles) caja.PlaceholderText = "1 a 5";
+            foreach (TextBox caja in vidas) caja.PlaceholderText = "1 a 100";
             foreach (TextBox caja in ataques) caja.PlaceholderText = "1 a 50";
             foreach (TextBox caja in defensas) caja.PlaceholderText = "0 a 40";
-            foreach (TextBox caja in vidas) caja.PlaceholderText = "1 a 100";
-            foreach (TextBox caja in pociones) caja.PlaceholderText = "0 a " + Personajes.MaximoPociones;
+        }
+
+        // ----------------- Deslizadores de Nivel y Pociones -----------------
+
+        /// <summary>
+        ///  El Nivel y las Pociones se eligen con TrackBar: el propio control
+        ///  no deja salir del rango, asi que no necesitan validacion.
+        /// </summary>
+        private void PrepararDeslizadores()
+        {
+            TrackBar[] niveles = { tbNivelJugador, tbNivelEnemigo };
+            TrackBar[] pociones = { tbPocionesJugador, tbPocionesEnemigo };
+
+            foreach (TrackBar barra in niveles)
+            {
+                barra.Minimum = 1;
+                barra.Maximum = 5;
+                barra.TickFrequency = 1;
+                barra.SmallChange = 1;
+                barra.LargeChange = 1;
+                barra.Value = 1;
+            }
+
+            foreach (TrackBar barra in pociones)
+            {
+                barra.Minimum = 0;
+                barra.Maximum = Personaje.MaximoPociones;
+                barra.TickFrequency = 1;
+                barra.SmallChange = 1;
+                barra.LargeChange = 1;
+                barra.Value = Personaje.MaximoPociones;
+            }
+
+            MostrarValorDeslizador(tbNivelJugador, lblValorNivelJugador);
+            MostrarValorDeslizador(tbNivelEnemigo, lblValorNivelEnemigo);
+            MostrarValorDeslizador(tbPocionesJugador, lblValorPocionesJugador);
+            MostrarValorDeslizador(tbPocionesEnemigo, lblValorPocionesEnemigo);
+        }
+
+        private void MostrarValorDeslizador(TrackBar barra, Label etiqueta)
+        {
+            etiqueta.Text = barra.Value + " de " + barra.Maximum;
+        }
+
+        private void tbNivelJugador_ValueChanged(object sender, EventArgs e)
+        {
+            MostrarValorDeslizador(tbNivelJugador, lblValorNivelJugador);
+        }
+
+        private void tbNivelEnemigo_ValueChanged(object sender, EventArgs e)
+        {
+            MostrarValorDeslizador(tbNivelEnemigo, lblValorNivelEnemigo);
+        }
+
+        private void tbPocionesJugador_ValueChanged(object sender, EventArgs e)
+        {
+            MostrarValorDeslizador(tbPocionesJugador, lblValorPocionesJugador);
+        }
+
+        private void tbPocionesEnemigo_ValueChanged(object sender, EventArgs e)
+        {
+            MostrarValorDeslizador(tbPocionesEnemigo, lblValorPocionesEnemigo);
+        }
+
+        // ----------------- Adelanto de la imagen -----------------
+
+        private void cboTipoJugador_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MostrarVistaPrevia(cboTipoJugador, picJugador);
+            txtVidaJugador.Focus();
+        }
+
+        private void cboTipoEnemigo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MostrarVistaPrevia(cboTipoEnemigo, picEnemigo);
+            txtVidaEnemigo.Focus();
+        }
+
+        private void MostrarVistaPrevia(ComboBox combo, PictureBox recuadro)
+        {
+            if (combo.SelectedIndex < 0)
+            {
+                recuadro.Image = null;
+                return;
+            }
+
+            recuadro.Image = ImagenesPersonaje.ObtenerVistaPrevia(combo.Text);
         }
 
         // ----------------- Crear personajes -----------------
 
-        private void btnCrearGuerrero_Click(object sender, EventArgs e)
+        private void btnCrearJugador_Click(object sender, EventArgs e)
         {
-            Personajes? creado = LeerPersonajeDeLaPantalla(
-                txtNombreGuerrero, comboBox1, txtNivelGuerrero, txtAtaqueGuerrero,
-                txtDefensaGuerrero, txtVidaGuerrero, txtPocionesGuerrero);
+            Personaje? creado = LeerPersonajeDeLaPantalla(
+                txtNombreJugador, cboTipoJugador, tbNivelJugador, txtVidaJugador,
+                txtAtaqueJugador, txtDefensaJugador, tbPocionesJugador);
 
             if (creado == null)
             {
-                return; // hubo un error de validacion, ya se le aviso al usuario
+                return; // error de validacion, ya se le aviso al usuario
             }
 
-            guerrero = creado;
-            MostrarGuerrero();
+            jugador = creado;
+            jugadorListo = true;
+            MostrarJugador();
             IntentarIniciarCombate();
         }
 
         private void btnCrearEnemigo_Click(object sender, EventArgs e)
         {
-            Personajes? creado = LeerPersonajeDeLaPantalla(
-                txtNombreEnemigo, comboBox2, txtNivelEnemigo, txtAtaqueEnemigo,
-                txtDefensaEnemigo, txtVidaEnemigo, txtPocionesEnemigo);
+            Personaje? creado = LeerPersonajeDeLaPantalla(
+                txtNombreEnemigo, cboTipoEnemigo, tbNivelEnemigo, txtVidaEnemigo,
+                txtAtaqueEnemigo, txtDefensaEnemigo, tbPocionesEnemigo);
 
             if (creado == null)
             {
@@ -93,16 +178,47 @@ namespace juegoRPG
             }
 
             enemigo = creado;
+            enemigoListo = true;
             MostrarEnemigo();
             IntentarIniciarCombate();
+        }
+
+        private void btnEnemigoAzar_Click(object sender, EventArgs e)
+        {
+            Personaje sorteado = Personaje.CrearEnemigoAleatorio(azar);
+
+            MostrarEnLaFicha(sorteado, txtNombreEnemigo, cboTipoEnemigo, tbNivelEnemigo,
+                txtVidaEnemigo, txtAtaqueEnemigo, txtDefensaEnemigo, tbPocionesEnemigo);
+
+            // Se usa el objeto sorteado tal cual, no uno rearmado desde la ficha:
+            // asi conserva la probabilidad de critico propia de ese enemigo.
+            enemigo = sorteado;
+            enemigoListo = true;
+
+            MostrarEnemigo();
+            IntentarIniciarCombate();
+        }
+
+        private void MostrarEnLaFicha(Personaje personaje, TextBox txtNombre, ComboBox cboTipo,
+            TrackBar tbNivel, TextBox txtVida, TextBox txtAtaque, TextBox txtDefensa,
+            TrackBar tbPociones)
+        {
+            txtNombre.Text = personaje.Nombre;
+            cboTipo.SelectedItem = personaje.TipoPersonaje;
+            tbNivel.Value = personaje.Nivel;
+            txtVida.Text = personaje.VidaMaxima.ToString();
+            txtAtaque.Text = personaje.Ataque.ToString();
+            txtDefensa.Text = personaje.Defensa.ToString();
+            tbPociones.Value = personaje.Pociones;
         }
 
         /// <summary>
         ///  Lee y valida los controles de un lado de la pantalla.
         ///  Devuelve null si algun dato esta malo (y muestra el mensaje correspondiente).
         /// </summary>
-        private Personajes? LeerPersonajeDeLaPantalla(TextBox txtNombre, ComboBox cboClase,
-            TextBox txtNivel, TextBox txtAtaque, TextBox txtDefensa, TextBox txtVida, TextBox txtPociones)
+        private Personaje? LeerPersonajeDeLaPantalla(TextBox txtNombre, ComboBox cboTipo,
+            TrackBar tbNivel, TextBox txtVida, TextBox txtAtaque, TextBox txtDefensa,
+            TrackBar tbPociones)
         {
             string nombre = txtNombre.Text.Trim();
             if (nombre.Length == 0)
@@ -113,42 +229,29 @@ namespace juegoRPG
                 return null;
             }
 
-            if (cboClase.SelectedIndex < 0)
+            if (cboTipo.SelectedIndex < 0)
             {
-                MessageBox.Show("Elige un tipo de clase.", "Falta la clase",
+                MessageBox.Show("Elige un tipo de personaje.", "Falta el tipo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cboClase.Focus();
+                cboTipo.Focus();
                 return null;
             }
 
-            int nivel;
+            int vida;
             int ataque;
             int defensa;
-            int vida;
-            int pociones;
 
-            if (!LeerNumero(txtNivel, "Nivel", 1, 5, out nivel)) return null;
+            if (!LeerNumero(txtVida, "Vida", 1, 100, out vida)) return null;
             if (!LeerNumero(txtAtaque, "Ataque", 1, 50, out ataque)) return null;
             if (!LeerNumero(txtDefensa, "Defensa", 0, 40, out defensa)) return null;
-            if (!LeerNumero(txtVida, "Vida", 1, 100, out vida)) return null;
-            if (!LeerNumero(txtPociones, "Pociones", 0, 20, out pociones)) return null;
 
-            // ---- Regla: maximo 3 pociones por partida ----
-            if (pociones > Personajes.MaximoPociones)
-            {
-                MessageBox.Show(
-                    "Solo se permiten " + Personajes.MaximoPociones + " pociones por partida.",
-                    "Limite de pociones", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int nivel = tbNivel.Value;
+            int pociones = tbPociones.Value;
 
-                pociones = Personajes.MaximoPociones;
-                txtPociones.Text = pociones.ToString();
-            }
-
-            // Ojo con el orden: asi esta escrito el constructor de Personajes.
-            return new Personajes(nombre, cboClase.Text, nivel, defensa, vida, ataque, pociones);
+            return new Personaje(nombre, cboTipo.Text, nivel, vida, ataque, defensa,
+                                 Personaje.CriticoPorDefecto, pociones);
         }
 
-        /// <summary>Convierte el texto de un TextBox a numero y revisa que este en rango.</summary>
         private bool LeerNumero(TextBox caja, string campo, int minimo, int maximo, out int valor)
         {
             if (!int.TryParse(caja.Text.Trim(), out valor))
@@ -175,55 +278,89 @@ namespace juegoRPG
         // ----------------- Combate por turnos -----------------
 
         /// <summary>
-        ///  Arranca la pelea solo cuando existen los dos personajes y ambos estan vivos
-        ///  (el que perdio la partida anterior hay que crearlo de nuevo).
+        ///  Arranca la pelea solo cuando los dos personajes fueron creados para esta partida.
         /// </summary>
         private void IntentarIniciarCombate()
         {
-            if (guerrero == null || enemigo == null || !guerrero.EstaVivo || !enemigo.EstaVivo)
+            if (!jugadorListo || !enemigoListo)
             {
-                ActualizarBotones();
+                // Uno de los dos viene de la partida anterior: hay que crearlo de nuevo.
+                if (jugador != null && enemigo != null)
+                {
+                    MessageBox.Show(
+                        "Para empezar una pelea nueva hay que crear a los DOS personajes.\n" +
+                        "Falta crear a " + (jugadorListo ? "el enemigo" : "el jugador") + ".",
+                        "Falta crear al otro personaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 return;
             }
 
             partidaEnCurso = true;
-            turnoDelGuerrero = true;
-            numeroDeTurnos = 1;
+            turnoDelJugador = true;
+            numeroDeTurno = 1;
 
             bitacora.Clear();
-            bitacora.Add(guerrero.Nombre + " (" + guerrero.ClasePersonaje + ", nivel " + guerrero.Nivel +
-                         ") se enfrenta a " + enemigo.Nombre + " (" + enemigo.ClasePersonaje + ", nivel " +
-                         enemigo.Nivel + ").");
+            bitacora.Add(jugador!.Nombre + " (" + jugador.TipoPersonaje + ", nivel " + jugador.Nivel +
+                         ") se enfrenta a " + enemigo!.Nombre + " (" + enemigo.TipoPersonaje +
+                         ", nivel " + enemigo.Nivel + ").");
 
             ActualizarBotones();
 
-            MessageBox.Show("Comienza la pelea. Parte atacando " + guerrero.Nombre + ".",
+            MessageBox.Show("Comienza la pelea. Parte atacando " + jugador.Nombre + ".",
                 "A pelear", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void btnAtacarGuerrero_Click(object sender, EventArgs e)
+        private void btnAtacarJugador_Click(object sender, EventArgs e)
         {
-            if (!partidaEnCurso || !turnoDelGuerrero) return;
-            Atacar(guerrero!, enemigo!);
+            if (!EsTurnoValido(true)) return;
+            Atacar(jugador!, enemigo!);
         }
 
         private void btnAtacarEnemigo_Click(object sender, EventArgs e)
         {
-            if (!partidaEnCurso || turnoDelGuerrero) return;
-            Atacar(enemigo!, guerrero!);
+            if (!EsTurnoValido(false)) return;
+            Atacar(enemigo!, jugador!);
         }
 
-        /// <summary>Aplica un ataque, revisa si alguien murio y pasa el turno.</summary>
-        private void Atacar(Personajes atacante, Personajes defensor)
+        private bool EsTurnoValido(bool esElJugador)
         {
-            int dano = atacante.CalcularDano(defensor, azar);
-            defensor.RecibirDano(dano);
+            if (!partidaEnCurso)
+            {
+                MessageBox.Show("Primero tienes que crear los dos personajes.",
+                    "Todavia no empieza", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
 
-            bitacora.Add("Turno " + numeroDeTurnos + ": " + atacante.Nombre + " golpeo a " +
-                         defensor.Nombre + " por " + dano + " de dano (le quedan " +
-                         defensor.Vida + " de vida).");
+            if (esElJugador != turnoDelJugador)
+            {
+                MessageBox.Show("No es tu turno. Espera al otro jugador.",
+                    "Turno equivocado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void Atacar(Personaje atacante, Personaje defensor)
+        {
+            ResultadoAtaque golpe = atacante.Atacar(defensor, azar);
+
+            string aviso = golpe.FueCritico ? "GOLPE CRITICO! " : "";
+
+            bitacora.Add("Turno " + numeroDeTurno + ": " + aviso + atacante.Nombre +
+                         " golpeo a " + defensor.Nombre + " por " + golpe.Danio +
+                         " de dano (le quedan " + defensor.Vida + " de vida).");
 
             RefrescarPantalla();
+
+            if (golpe.FueCritico)
+            {
+                MessageBox.Show(
+                    atacante.Nombre + " ataca a " + defensor.Nombre + ".\n\n" +
+                    "GOLPE CRITICO!\n\n" +
+                    "Dano causado: " + golpe.Danio,
+                    "Golpe critico", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
 
             if (!defensor.EstaVivo)
             {
@@ -234,20 +371,20 @@ namespace juegoRPG
             CambiarTurno();
         }
 
-        private void btnPocionesGuerrero_Click(object sender, EventArgs e)
+        private void btnPocionJugador_Click(object sender, EventArgs e)
         {
-            if (!partidaEnCurso || !turnoDelGuerrero) return;
-            UsarPocion(guerrero!);
+            if (!EsTurnoValido(true)) return;
+            BeberPocion(jugador!);
         }
 
-        private void btnPocionesEnemigo_Click(object sender, EventArgs e)
+        private void btnPocionEnemigo_Click(object sender, EventArgs e)
         {
-            if (!partidaEnCurso || turnoDelGuerrero) return;
-            UsarPocion(enemigo!);
+            if (!EsTurnoValido(false)) return;
+            BeberPocion(enemigo!);
         }
 
         /// <summary>Cura al personaje. Gastar una pocion consume el turno.</summary>
-        private void UsarPocion(Personajes personaje)
+        private void BeberPocion(Personaje personaje)
         {
             if (personaje.Pociones <= 0)
             {
@@ -256,9 +393,16 @@ namespace juegoRPG
                 return;
             }
 
+            if (personaje.Vida == personaje.VidaMaxima)
+            {
+                MessageBox.Show(personaje.Nombre + " tiene la vida llena, no necesita una pocion.",
+                    "Vida llena", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             int curado = personaje.UsarPocion();
 
-            bitacora.Add("Turno " + numeroDeTurnos + ": " + personaje.Nombre +
+            bitacora.Add("Turno " + numeroDeTurno + ": " + personaje.Nombre +
                          " bebio una pocion y recupero " + curado + " de vida (le quedan " +
                          personaje.Pociones + " pociones).");
 
@@ -268,16 +412,18 @@ namespace juegoRPG
 
         private void CambiarTurno()
         {
-            turnoDelGuerrero = !turnoDelGuerrero;
-            numeroDeTurnos = numeroDeTurnos + 1;
+            turnoDelJugador = !turnoDelJugador;
+            numeroDeTurno = numeroDeTurno + 1;
             ActualizarBotones();
         }
 
         // ----------------- Fin de la partida -----------------
 
-        private void TerminarPartida(Personajes ganador, Personajes perdedor)
+        private void TerminarPartida(Personaje ganador, Personaje perdedor)
         {
             partidaEnCurso = false;
+            jugadorListo = false;
+            enemigoListo = false;
             ActualizarBotones();
 
             bitacora.Add(perdedor.Nombre + " cayo derrotado. Gana " + ganador.Nombre + ".");
@@ -285,65 +431,138 @@ namespace juegoRPG
             MessageBox.Show(ganador.Nombre + " gano la pelea!", "Fin de la partida",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // ===== TODO (esta parte la haces tu) =====
-            // 1) Mostrar la historia de la pelea usando la lista "bitacora",
-            //    que ya tiene guardado turno por turno todo lo que paso.
-            // 2) Dejar el tablero limpio para crear personajes nuevos.
-            //    (Primero la historia y despues limpiar, o se pierden los datos.)
-            // poner imagenes de los personajes en la pantalla de victoria y derrota, si quieres puedes poner un boton para reiniciar la partida y crear nuevos personajes.
+            MostrarBitacora();
+        }
+
+        private void MostrarBitacora()
+        {
+            if (bitacora.Count == 0)
+            {
+                MessageBox.Show("Todavia no hay nada en la bitacora.",
+                    "Bitacora vacia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string historia = string.Join(Environment.NewLine, bitacora);
+            MessageBox.Show(historia, "Bitacora de la pelea", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>Deja el juego como recien abierto: sin personajes, fichas vacias y sin bitacora.</summary>
+        private void btnNuevaPartida_Click(object sender, EventArgs e)
+        {
+            if (partidaEnCurso)
+            {
+                DialogResult respuesta = MessageBox.Show(
+                    "Hay una pelea en curso. Quieres abandonarla y empezar de cero?",
+                    "Nueva partida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (respuesta != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            jugador = null;
+            enemigo = null;
+            jugadorListo = false;
+            enemigoListo = false;
+            partidaEnCurso = false;
+            turnoDelJugador = true;
+            numeroDeTurno = 0;
+            bitacora.Clear();
+
+            LimpiarFicha(txtNombreJugador, cboTipoJugador, tbNivelJugador, txtVidaJugador,
+                txtAtaqueJugador, txtDefensaJugador, tbPocionesJugador);
+            LimpiarFicha(txtNombreEnemigo, cboTipoEnemigo, tbNivelEnemigo, txtVidaEnemigo,
+                txtAtaqueEnemigo, txtDefensaEnemigo, tbPocionesEnemigo);
+
+            RefrescarPantalla();
+            ActualizarBotones();
+            txtNombreJugador.Focus();
+        }
+
+        private void LimpiarFicha(TextBox txtNombre, ComboBox cboTipo, TrackBar tbNivel,
+            TextBox txtVida, TextBox txtAtaque, TextBox txtDefensa, TrackBar tbPociones)
+        {
+            txtNombre.Clear();
+            cboTipo.SelectedIndex = -1;
+            tbNivel.Value = tbNivel.Minimum;
+            txtVida.Clear();
+            txtAtaque.Clear();
+            txtDefensa.Clear();
+            tbPociones.Value = tbPociones.Maximum;
         }
 
         // ----------------- Mostrar en pantalla -----------------
 
         private void RefrescarPantalla()
         {
-            MostrarGuerrero();
+            MostrarJugador();
             MostrarEnemigo();
         }
 
-        private void MostrarGuerrero()
+        private void MostrarJugador()
         {
-            if (guerrero == null) return;
-
-            lblNombreGuerrero.Text = guerrero.Nombre + " (" + guerrero.ClasePersonaje + ")";
-            lblVidaGuerrero.Text = "Vida: " + guerrero.Vida + " / " + guerrero.VidaMaxima;
-            lblNivelGuerrero.Text = "Nivel: " + guerrero.Nivel + "  |  Pociones: " + guerrero.Pociones;
-            lblAtaqueGuerrero.Text = "Ataque: " + guerrero.Ataque;
-            lblDefensaGuerrero.Text = "Defensa: " + guerrero.Defensa;
-
-            progressBar1.Maximum = guerrero.VidaMaxima;
-            progressBar1.Value = guerrero.Vida;
+            MostrarPersonaje(jugador, picJugador, pbVidaJugador, lblNombreJugador,
+                lblVidaJugador, lblNivelJugador, lblAtaqueJugador, lblDefensaJugador,
+                lblCriticoJugador, lblPocionesJugador);
         }
 
         private void MostrarEnemigo()
         {
-            if (enemigo == null) return;
-
-            lblNombreEnemigo.Text = enemigo.Nombre + " (" + enemigo.ClasePersonaje + ")";
-            lblVidaEnemigo.Text = "Vida: " + enemigo.Vida + " / " + enemigo.VidaMaxima;
-            lblNivelEnemigo.Text = "Nivel: " + enemigo.Nivel + "  |  Pociones: " + enemigo.Pociones;
-            lblAtaqueEnemigo.Text = "Ataque: " + enemigo.Ataque;
-            lblDefensaEnemigo.Text = "Defensa: " + enemigo.Defensa;
-
-            progressBar2.Maximum = enemigo.VidaMaxima;
-            progressBar2.Value = enemigo.Vida;
+            MostrarPersonaje(enemigo, picEnemigo, pbVidaEnemigo, lblNombreEnemigo,
+                lblVidaEnemigo, lblNivelEnemigo, lblAtaqueEnemigo, lblDefensaEnemigo,
+                lblCriticoEnemigo, lblPocionesEnemigo);
         }
 
         /// <summary>
-        ///  Habilita solo los botones de quien tiene el turno.
-        ///  Esto es lo que hace que el juego sea realmente por turnos.
+        ///  Vuelca los datos de un personaje en los controles de su lado.
+        ///  Si no hay personaje, deja el lado vacio.
         /// </summary>
+        private void MostrarPersonaje(Personaje? personaje, PictureBox recuadro,
+            ProgressBar barraVida, Label lblNombre, Label lblVida, Label lblNivel,
+            Label lblAtaque, Label lblDefensa, Label lblCritico, Label lblPociones)
+        {
+            if (personaje == null)
+            {
+                foreach (Label etiqueta in new[] { lblNombre, lblVida, lblNivel, lblAtaque,
+                                                   lblDefensa, lblCritico, lblPociones })
+                {
+                    etiqueta.Text = "-";
+                }
+                barraVida.Value = 0;
+                recuadro.Image = null;
+                return;
+            }
+
+            lblNombre.Text = personaje.Nombre + "  (" + personaje.TipoPersonaje + ")";
+            lblVida.Text = "Vida: " + personaje.Vida + " / " + personaje.VidaMaxima +
+                           "   (" + personaje.CalcularPorcentajeVida() + "%)";
+            lblNivel.Text = "Nivel: " + personaje.Nivel;
+            lblAtaque.Text = "Ataque: " + personaje.Ataque;
+            lblDefensa.Text = "Defensa: " + personaje.Defensa;
+            lblCritico.Text = "Critico: " + personaje.ProbabilidadCritico + "%";
+            lblPociones.Text = "Pociones: " + personaje.Pociones + " / " + Personaje.MaximoPociones;
+
+            barraVida.Maximum = personaje.VidaMaxima;
+            barraVida.Value = personaje.Vida;
+
+            // La imagen cambia segun el tramo de vida en que quedo el personaje.
+            recuadro.Image = ImagenesPersonaje.Obtener(personaje.TipoPersonaje, personaje.Estado);
+        }
+
+        /// <summary>Habilita solo los botones de quien tiene el turno.</summary>
         private void ActualizarBotones()
         {
-            btnAtacarGuerrero.Enabled = partidaEnCurso && turnoDelGuerrero;
-            btnPocionesGuerrero.Enabled = partidaEnCurso && turnoDelGuerrero;
+            btnAtacarJugador.Enabled = partidaEnCurso && turnoDelJugador;
+            btnPocionJugador.Enabled = partidaEnCurso && turnoDelJugador;
 
-            btnAtacarEnemigo.Enabled = partidaEnCurso && !turnoDelGuerrero;
-            btnPocionesEnemigo.Enabled = partidaEnCurso && !turnoDelGuerrero;
+            btnAtacarEnemigo.Enabled = partidaEnCurso && !turnoDelJugador;
+            btnPocionEnemigo.Enabled = partidaEnCurso && !turnoDelJugador;
 
-            // Mientras hay pelea no se pueden crear personajes nuevos.
-            btnCrearGuerrero.Enabled = !partidaEnCurso;
+            btnCrearJugador.Enabled = !partidaEnCurso;
             btnCrearEnemigo.Enabled = !partidaEnCurso;
+            btnEnemigoAzar.Enabled = !partidaEnCurso;
         }
     }
 }
