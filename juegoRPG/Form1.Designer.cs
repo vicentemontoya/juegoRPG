@@ -29,6 +29,8 @@ namespace juegoRPG
         private void InitializeComponent()
         {
             grpJugador = new GroupBox();
+            lstInventarioJugador = new ListBox();
+            btnInventarioJugador1 = new Button();
             grpFichaJugador = new GroupBox();
             lblCapNombreJugador = new Label();
             txtNombreJugador = new TextBox();
@@ -59,6 +61,9 @@ namespace juegoRPG
             btnAtacarJugador = new Button();
             btnPocionJugador = new Button();
             grpEnemigo = new GroupBox();
+            lstInventarioEnemigo = new ListBox();
+            btnInventarioEnemigo = new Button();
+            btnNuevaPartida = new Button();
             grpFichaEnemigo = new GroupBox();
             lblCapNombreEnemigo = new Label();
             txtNombreEnemigo = new TextBox();
@@ -89,7 +94,6 @@ namespace juegoRPG
             lblPocionesEnemigo = new Label();
             btnAtacarEnemigo = new Button();
             btnPocionEnemigo = new Button();
-            btnNuevaPartida = new Button();
             grpJugador.SuspendLayout();
             grpFichaJugador.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tbNivelJugador).BeginInit();
@@ -105,6 +109,8 @@ namespace juegoRPG
             // grpJugador
             // 
             grpJugador.BackColor = SystemColors.ActiveCaption;
+            grpJugador.Controls.Add(lstInventarioJugador);
+            grpJugador.Controls.Add(btnInventarioJugador1);
             grpJugador.Controls.Add(grpFichaJugador);
             grpJugador.Controls.Add(picJugador);
             grpJugador.Controls.Add(lblNombreJugador);
@@ -126,6 +132,24 @@ namespace juegoRPG
             grpJugador.TabIndex = 0;
             grpJugador.TabStop = false;
             grpJugador.Text = "Tu personaje";
+            // 
+            // lstInventarioJugador
+            // 
+            lstInventarioJugador.FormattingEnabled = true;
+            lstInventarioJugador.Location = new Point(251, 800);
+            lstInventarioJugador.Name = "lstInventarioJugador";
+            lstInventarioJugador.Size = new Size(171, 73);
+            lstInventarioJugador.TabIndex = 13;
+            // 
+            // btnInventarioJugador1
+            // 
+            btnInventarioJugador1.Location = new Point(251, 759);
+            btnInventarioJugador1.Name = "btnInventarioJugador1";
+            btnInventarioJugador1.Size = new Size(171, 36);
+            btnInventarioJugador1.TabIndex = 12;
+            btnInventarioJugador1.Text = "Inventario ";
+            btnInventarioJugador1.UseVisualStyleBackColor = true;
+            btnInventarioJugador1.Click += btnInventarioJugador1_Click;
             // 
             // grpFichaJugador
             // 
@@ -438,6 +462,8 @@ namespace juegoRPG
             // grpEnemigo
             // 
             grpEnemigo.BackColor = Color.FromArgb(255, 128, 128);
+            grpEnemigo.Controls.Add(lstInventarioEnemigo);
+            grpEnemigo.Controls.Add(btnInventarioEnemigo);
             grpEnemigo.Controls.Add(btnNuevaPartida);
             grpEnemigo.Controls.Add(grpFichaEnemigo);
             grpEnemigo.Controls.Add(picEnemigo);
@@ -460,6 +486,35 @@ namespace juegoRPG
             grpEnemigo.TabIndex = 1;
             grpEnemigo.TabStop = false;
             grpEnemigo.Text = "Tu enemigo";
+            // 
+            // lstInventarioEnemigo
+            // 
+            lstInventarioEnemigo.FormattingEnabled = true;
+            lstInventarioEnemigo.Location = new Point(254, 800);
+            lstInventarioEnemigo.Name = "lstInventarioEnemigo";
+            lstInventarioEnemigo.Size = new Size(171, 73);
+            lstInventarioEnemigo.TabIndex = 14;
+            // 
+            // btnInventarioEnemigo
+            // 
+            btnInventarioEnemigo.Location = new Point(254, 759);
+            btnInventarioEnemigo.Name = "btnInventarioEnemigo";
+            btnInventarioEnemigo.Size = new Size(171, 36);
+            btnInventarioEnemigo.TabIndex = 13;
+            btnInventarioEnemigo.Text = "Inventario ";
+            btnInventarioEnemigo.UseVisualStyleBackColor = true;
+            btnInventarioEnemigo.Click += btnInventarioEnemigo_Click;
+            // 
+            // btnNuevaPartida
+            // 
+            btnNuevaPartida.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnNuevaPartida.Location = new Point(27, 812);
+            btnNuevaPartida.Name = "btnNuevaPartida";
+            btnNuevaPartida.Size = new Size(190, 61);
+            btnNuevaPartida.TabIndex = 12;
+            btnNuevaPartida.Text = "Nueva partida";
+            btnNuevaPartida.UseVisualStyleBackColor = true;
+            btnNuevaPartida.Click += btnNuevaPartida_Click;
             // 
             // grpFichaEnemigo
             // 
@@ -781,17 +836,6 @@ namespace juegoRPG
             btnPocionEnemigo.UseVisualStyleBackColor = true;
             btnPocionEnemigo.Click += btnPocionEnemigo_Click;
             // 
-            // btnNuevaPartida
-            // 
-            btnNuevaPartida.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnNuevaPartida.Location = new Point(27, 812);
-            btnNuevaPartida.Name = "btnNuevaPartida";
-            btnNuevaPartida.Size = new Size(190, 61);
-            btnNuevaPartida.TabIndex = 12;
-            btnNuevaPartida.Text = "Nueva partida";
-            btnNuevaPartida.UseVisualStyleBackColor = true;
-            btnNuevaPartida.Click += btnNuevaPartida_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -888,5 +932,9 @@ namespace juegoRPG
         private Button btnAtacarEnemigo;
         private Button btnPocionEnemigo;
         private Button btnNuevaPartida;
+        private Button btnInventarioJugador1;
+        private Button btnInventarioEnemigo;
+        private ListBox lstInventarioJugador;
+        private ListBox lstInventarioEnemigo;
     }
 }

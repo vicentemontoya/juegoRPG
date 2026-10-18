@@ -1,8 +1,10 @@
+using System.Drawing.Text;
+
 namespace juegoRPG
 {
     public partial class Form1 : Form
     {
-        // ----------------- Estado de la partida -----------------
+
 
         private Personaje? jugador;
         private Personaje? enemigo;
@@ -14,10 +16,21 @@ namespace juegoRPG
         private bool partidaEnCurso = false;
         private int numeroDeTurno = 0;
 
-        // Se ponen en true al crear cada personaje y vuelven a false al terminar la pelea,
-        // asi la siguiente partida exige crear a los dos de nuevo.
+
         private bool jugadorListo = false;
         private bool enemigoListo = false;
+        // cambios Benja inventario
+        private Inventario mochila = new Inventario();
+
+        private Item pocionVida = new Item(
+            "Poción de vida", "Consumible", 50, 3
+        );
+
+        private Item anilloPoder = new Item(
+            "Anillo de poder", "Accesorio", 10, 1
+        );
+        private object inventarioJugador;
+        private object inventarioEnemigo;
 
         public Form1()
         {
@@ -26,9 +39,20 @@ namespace juegoRPG
             PrepararCamposDeEstadisticas();
             PrepararDeslizadores();
             ActualizarBotones();
+
+            // cambios Benja inventario
+            mochila.AgregarItem(pocionVida);
+            mochila.AgregarItem(anilloPoder);
+            // cambios Benja inventario
+            lstInventarioJugador.Visible = false;
+            lstInventarioEnemigo.Visible = false;
+
+
+
+
         }
 
-        // ----------------- Preparacion -----------------
+
 
         private void PrepararCombos()
         {
@@ -563,6 +587,10 @@ namespace juegoRPG
             btnCrearJugador.Enabled = !partidaEnCurso;
             btnCrearEnemigo.Enabled = !partidaEnCurso;
             btnEnemigoAzar.Enabled = !partidaEnCurso;
+        
+
+
+            }
         }
     }
-}
+    
