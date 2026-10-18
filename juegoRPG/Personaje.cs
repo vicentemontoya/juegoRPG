@@ -85,6 +85,31 @@ namespace juegoRPG
             Pociones = pociones;
         }
 
+        /// <summary>
+        ///  Deja la vida actual en un valor concreto, sin pasar del maximo ni bajar de 0.
+        ///  Sirve para reconstruir una partida guardada: el constructor siempre deja la
+        ///  vida llena, y un personaje cargado puede venir herido.
+        /// </summary>
+        public void RestaurarVida(int vidaActual)
+        {
+            if (vidaActual < 0) vidaActual = 0;
+            if (vidaActual > VidaMaxima) vidaActual = VidaMaxima;
+            Vida = vidaActual;
+        }
+
+        /// <summary>
+        ///  Suma (o resta, si viene negativo) los bonos de un objeto equipado.
+        ///  El ataque nunca baja de 1 y la defensa nunca baja de 0.
+        /// </summary>
+        public void AplicarBonificacion(int bonoAtaque, int bonoDefensa)
+        {
+            Ataque = Ataque + bonoAtaque;
+            if (Ataque < 1) Ataque = 1;
+
+            Defensa = Defensa + bonoDefensa;
+            if (Defensa < 0) Defensa = 0;
+        }
+
         public int CalcularPorcentajeVida()
         {
             if (VidaMaxima <= 0)
