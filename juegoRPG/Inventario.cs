@@ -19,8 +19,3 @@ namespace juegoRPG
         }
     }
 }
-    
-       
-
-        
-

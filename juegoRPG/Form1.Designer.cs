@@ -30,7 +30,7 @@ namespace juegoRPG
         {
             grpJugador = new GroupBox();
             lstInventarioJugador = new ListBox();
-            btnInventarioJugador1 = new Button();
+            btnInventarioJugador = new Button();
             grpFichaJugador = new GroupBox();
             lblCapNombreJugador = new Label();
             txtNombreJugador = new TextBox();
@@ -110,7 +110,7 @@ namespace juegoRPG
             // 
             grpJugador.BackColor = SystemColors.ActiveCaption;
             grpJugador.Controls.Add(lstInventarioJugador);
-            grpJugador.Controls.Add(btnInventarioJugador1);
+            grpJugador.Controls.Add(btnInventarioJugador);
             grpJugador.Controls.Add(grpFichaJugador);
             grpJugador.Controls.Add(picJugador);
             grpJugador.Controls.Add(lblNombreJugador);
@@ -128,7 +128,7 @@ namespace juegoRPG
             grpJugador.Margin = new Padding(3, 4, 3, 4);
             grpJugador.Name = "grpJugador";
             grpJugador.Padding = new Padding(3, 4, 3, 4);
-            grpJugador.Size = new Size(631, 895);
+            grpJugador.Size = new Size(631, 728);
             grpJugador.TabIndex = 0;
             grpJugador.TabStop = false;
             grpJugador.Text = "Tu personaje";
@@ -136,20 +136,22 @@ namespace juegoRPG
             // lstInventarioJugador
             // 
             lstInventarioJugador.FormattingEnabled = true;
-            lstInventarioJugador.Location = new Point(251, 800);
+            lstInventarioJugador.Font = new Font("Segoe UI", 10F);
+            lstInventarioJugador.Location = new Point(434, 493);
             lstInventarioJugador.Name = "lstInventarioJugador";
-            lstInventarioJugador.Size = new Size(171, 73);
+            lstInventarioJugador.Size = new Size(171, 104);
             lstInventarioJugador.TabIndex = 13;
             // 
-            // btnInventarioJugador1
+            // btnInventarioJugador
             // 
-            btnInventarioJugador1.Location = new Point(251, 759);
-            btnInventarioJugador1.Name = "btnInventarioJugador1";
-            btnInventarioJugador1.Size = new Size(171, 36);
-            btnInventarioJugador1.TabIndex = 12;
-            btnInventarioJugador1.Text = "Inventario ";
-            btnInventarioJugador1.UseVisualStyleBackColor = true;
-            btnInventarioJugador1.Click += btnInventarioJugador1_Click;
+            btnInventarioJugador.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnInventarioJugador.Location = new Point(434, 455);
+            btnInventarioJugador.Name = "btnInventarioJugador";
+            btnInventarioJugador.Size = new Size(171, 32);
+            btnInventarioJugador.TabIndex = 12;
+            btnInventarioJugador.Text = "Inventario";
+            btnInventarioJugador.UseVisualStyleBackColor = true;
+            btnInventarioJugador.Click += btnInventarioJugador_Click;
             // 
             // grpFichaJugador
             // 
@@ -176,7 +178,7 @@ namespace juegoRPG
             grpFichaJugador.Margin = new Padding(3, 4, 3, 4);
             grpFichaJugador.Name = "grpFichaJugador";
             grpFichaJugador.Padding = new Padding(3, 4, 3, 4);
-            grpFichaJugador.Size = new Size(599, 307);
+            grpFichaJugador.Size = new Size(599, 293);
             grpFichaJugador.TabIndex = 0;
             grpFichaJugador.TabStop = false;
             grpFichaJugador.Text = "Estadísticas";
@@ -349,10 +351,10 @@ namespace juegoRPG
             // 
             picJugador.BackColor = Color.Transparent;
             picJugador.BorderStyle = BorderStyle.FixedSingle;
-            picJugador.Location = new Point(23, 367);
+            picJugador.Location = new Point(23, 345);
             picJugador.Margin = new Padding(3, 4, 3, 4);
             picJugador.Name = "picJugador";
-            picJugador.Size = new Size(205, 413);
+            picJugador.Size = new Size(205, 310);
             picJugador.SizeMode = PictureBoxSizeMode.Zoom;
             picJugador.TabIndex = 1;
             picJugador.TabStop = false;
@@ -361,7 +363,7 @@ namespace juegoRPG
             // 
             lblNombreJugador.AutoSize = true;
             lblNombreJugador.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblNombreJugador.Location = new Point(251, 371);
+            lblNombreJugador.Location = new Point(251, 349);
             lblNombreJugador.Name = "lblNombreJugador";
             lblNombreJugador.Size = new Size(20, 28);
             lblNombreJugador.TabIndex = 2;
@@ -371,7 +373,7 @@ namespace juegoRPG
             // 
             lblVidaJugador.AutoSize = true;
             lblVidaJugador.Font = new Font("Segoe UI", 10F);
-            lblVidaJugador.Location = new Point(251, 417);
+            lblVidaJugador.Location = new Point(251, 385);
             lblVidaJugador.Name = "lblVidaJugador";
             lblVidaJugador.Size = new Size(17, 23);
             lblVidaJugador.TabIndex = 3;
@@ -379,7 +381,7 @@ namespace juegoRPG
             // 
             // pbVidaJugador
             // 
-            pbVidaJugador.Location = new Point(251, 453);
+            pbVidaJugador.Location = new Point(251, 416);
             pbVidaJugador.Margin = new Padding(3, 4, 3, 4);
             pbVidaJugador.Name = "pbVidaJugador";
             pbVidaJugador.Size = new Size(354, 27);
@@ -389,7 +391,7 @@ namespace juegoRPG
             // 
             lblNivelJugador.AutoSize = true;
             lblNivelJugador.Font = new Font("Segoe UI", 10F);
-            lblNivelJugador.Location = new Point(251, 496);
+            lblNivelJugador.Location = new Point(251, 455);
             lblNivelJugador.Name = "lblNivelJugador";
             lblNivelJugador.Size = new Size(17, 23);
             lblNivelJugador.TabIndex = 5;
@@ -399,7 +401,7 @@ namespace juegoRPG
             // 
             lblAtaqueJugador.AutoSize = true;
             lblAtaqueJugador.Font = new Font("Segoe UI", 10F);
-            lblAtaqueJugador.Location = new Point(251, 531);
+            lblAtaqueJugador.Location = new Point(251, 485);
             lblAtaqueJugador.Name = "lblAtaqueJugador";
             lblAtaqueJugador.Size = new Size(17, 23);
             lblAtaqueJugador.TabIndex = 6;
@@ -409,7 +411,7 @@ namespace juegoRPG
             // 
             lblDefensaJugador.AutoSize = true;
             lblDefensaJugador.Font = new Font("Segoe UI", 10F);
-            lblDefensaJugador.Location = new Point(251, 565);
+            lblDefensaJugador.Location = new Point(251, 515);
             lblDefensaJugador.Name = "lblDefensaJugador";
             lblDefensaJugador.Size = new Size(17, 23);
             lblDefensaJugador.TabIndex = 7;
@@ -419,7 +421,7 @@ namespace juegoRPG
             // 
             lblCriticoJugador.AutoSize = true;
             lblCriticoJugador.Font = new Font("Segoe UI", 10F);
-            lblCriticoJugador.Location = new Point(251, 600);
+            lblCriticoJugador.Location = new Point(251, 545);
             lblCriticoJugador.Name = "lblCriticoJugador";
             lblCriticoJugador.Size = new Size(17, 23);
             lblCriticoJugador.TabIndex = 11;
@@ -429,7 +431,7 @@ namespace juegoRPG
             // 
             lblPocionesJugador.AutoSize = true;
             lblPocionesJugador.Font = new Font("Segoe UI", 10F);
-            lblPocionesJugador.Location = new Point(251, 635);
+            lblPocionesJugador.Location = new Point(251, 575);
             lblPocionesJugador.Name = "lblPocionesJugador";
             lblPocionesJugador.Size = new Size(17, 23);
             lblPocionesJugador.TabIndex = 8;
@@ -438,10 +440,10 @@ namespace juegoRPG
             // btnAtacarJugador
             // 
             btnAtacarJugador.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnAtacarJugador.Location = new Point(251, 691);
+            btnAtacarJugador.Location = new Point(251, 610);
             btnAtacarJugador.Margin = new Padding(3, 4, 3, 4);
             btnAtacarJugador.Name = "btnAtacarJugador";
-            btnAtacarJugador.Size = new Size(171, 61);
+            btnAtacarJugador.Size = new Size(171, 50);
             btnAtacarJugador.TabIndex = 9;
             btnAtacarJugador.Text = "Atacar";
             btnAtacarJugador.UseVisualStyleBackColor = true;
@@ -450,10 +452,10 @@ namespace juegoRPG
             // btnPocionJugador
             // 
             btnPocionJugador.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnPocionJugador.Location = new Point(434, 691);
+            btnPocionJugador.Location = new Point(434, 610);
             btnPocionJugador.Margin = new Padding(3, 4, 3, 4);
             btnPocionJugador.Name = "btnPocionJugador";
-            btnPocionJugador.Size = new Size(171, 61);
+            btnPocionJugador.Size = new Size(171, 50);
             btnPocionJugador.TabIndex = 10;
             btnPocionJugador.Text = "Usar poción";
             btnPocionJugador.UseVisualStyleBackColor = true;
@@ -482,7 +484,7 @@ namespace juegoRPG
             grpEnemigo.Margin = new Padding(3, 4, 3, 4);
             grpEnemigo.Name = "grpEnemigo";
             grpEnemigo.Padding = new Padding(3, 4, 3, 4);
-            grpEnemigo.Size = new Size(631, 895);
+            grpEnemigo.Size = new Size(631, 728);
             grpEnemigo.TabIndex = 1;
             grpEnemigo.TabStop = false;
             grpEnemigo.Text = "Tu enemigo";
@@ -490,27 +492,29 @@ namespace juegoRPG
             // lstInventarioEnemigo
             // 
             lstInventarioEnemigo.FormattingEnabled = true;
-            lstInventarioEnemigo.Location = new Point(254, 800);
+            lstInventarioEnemigo.Font = new Font("Segoe UI", 10F);
+            lstInventarioEnemigo.Location = new Point(434, 493);
             lstInventarioEnemigo.Name = "lstInventarioEnemigo";
-            lstInventarioEnemigo.Size = new Size(171, 73);
+            lstInventarioEnemigo.Size = new Size(171, 104);
             lstInventarioEnemigo.TabIndex = 14;
             // 
             // btnInventarioEnemigo
             // 
-            btnInventarioEnemigo.Location = new Point(254, 759);
+            btnInventarioEnemigo.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnInventarioEnemigo.Location = new Point(434, 455);
             btnInventarioEnemigo.Name = "btnInventarioEnemigo";
-            btnInventarioEnemigo.Size = new Size(171, 36);
+            btnInventarioEnemigo.Size = new Size(171, 32);
             btnInventarioEnemigo.TabIndex = 13;
-            btnInventarioEnemigo.Text = "Inventario ";
+            btnInventarioEnemigo.Text = "Inventario";
             btnInventarioEnemigo.UseVisualStyleBackColor = true;
             btnInventarioEnemigo.Click += btnInventarioEnemigo_Click;
             // 
             // btnNuevaPartida
             // 
             btnNuevaPartida.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnNuevaPartida.Location = new Point(27, 812);
+            btnNuevaPartida.Location = new Point(23, 668);
             btnNuevaPartida.Name = "btnNuevaPartida";
-            btnNuevaPartida.Size = new Size(190, 61);
+            btnNuevaPartida.Size = new Size(205, 46);
             btnNuevaPartida.TabIndex = 12;
             btnNuevaPartida.Text = "Nueva partida";
             btnNuevaPartida.UseVisualStyleBackColor = true;
@@ -542,7 +546,7 @@ namespace juegoRPG
             grpFichaEnemigo.Margin = new Padding(3, 4, 3, 4);
             grpFichaEnemigo.Name = "grpFichaEnemigo";
             grpFichaEnemigo.Padding = new Padding(3, 4, 3, 4);
-            grpFichaEnemigo.Size = new Size(599, 307);
+            grpFichaEnemigo.Size = new Size(599, 293);
             grpFichaEnemigo.TabIndex = 0;
             grpFichaEnemigo.TabStop = false;
             grpFichaEnemigo.Text = "Estadísticas";
@@ -726,10 +730,10 @@ namespace juegoRPG
             // 
             picEnemigo.BackColor = Color.Transparent;
             picEnemigo.BorderStyle = BorderStyle.FixedSingle;
-            picEnemigo.Location = new Point(23, 367);
+            picEnemigo.Location = new Point(23, 345);
             picEnemigo.Margin = new Padding(3, 4, 3, 4);
             picEnemigo.Name = "picEnemigo";
-            picEnemigo.Size = new Size(205, 413);
+            picEnemigo.Size = new Size(205, 310);
             picEnemigo.SizeMode = PictureBoxSizeMode.Zoom;
             picEnemigo.TabIndex = 1;
             picEnemigo.TabStop = false;
@@ -738,7 +742,7 @@ namespace juegoRPG
             // 
             lblNombreEnemigo.AutoSize = true;
             lblNombreEnemigo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblNombreEnemigo.Location = new Point(251, 371);
+            lblNombreEnemigo.Location = new Point(251, 349);
             lblNombreEnemigo.Name = "lblNombreEnemigo";
             lblNombreEnemigo.Size = new Size(20, 28);
             lblNombreEnemigo.TabIndex = 2;
@@ -748,7 +752,7 @@ namespace juegoRPG
             // 
             lblVidaEnemigo.AutoSize = true;
             lblVidaEnemigo.Font = new Font("Segoe UI", 10F);
-            lblVidaEnemigo.Location = new Point(251, 417);
+            lblVidaEnemigo.Location = new Point(251, 385);
             lblVidaEnemigo.Name = "lblVidaEnemigo";
             lblVidaEnemigo.Size = new Size(17, 23);
             lblVidaEnemigo.TabIndex = 3;
@@ -756,7 +760,7 @@ namespace juegoRPG
             // 
             // pbVidaEnemigo
             // 
-            pbVidaEnemigo.Location = new Point(251, 453);
+            pbVidaEnemigo.Location = new Point(251, 416);
             pbVidaEnemigo.Margin = new Padding(3, 4, 3, 4);
             pbVidaEnemigo.Name = "pbVidaEnemigo";
             pbVidaEnemigo.Size = new Size(354, 27);
@@ -766,7 +770,7 @@ namespace juegoRPG
             // 
             lblNivelEnemigo.AutoSize = true;
             lblNivelEnemigo.Font = new Font("Segoe UI", 10F);
-            lblNivelEnemigo.Location = new Point(251, 496);
+            lblNivelEnemigo.Location = new Point(251, 455);
             lblNivelEnemigo.Name = "lblNivelEnemigo";
             lblNivelEnemigo.Size = new Size(17, 23);
             lblNivelEnemigo.TabIndex = 5;
@@ -776,7 +780,7 @@ namespace juegoRPG
             // 
             lblAtaqueEnemigo.AutoSize = true;
             lblAtaqueEnemigo.Font = new Font("Segoe UI", 10F);
-            lblAtaqueEnemigo.Location = new Point(251, 531);
+            lblAtaqueEnemigo.Location = new Point(251, 485);
             lblAtaqueEnemigo.Name = "lblAtaqueEnemigo";
             lblAtaqueEnemigo.Size = new Size(17, 23);
             lblAtaqueEnemigo.TabIndex = 6;
@@ -786,7 +790,7 @@ namespace juegoRPG
             // 
             lblDefensaEnemigo.AutoSize = true;
             lblDefensaEnemigo.Font = new Font("Segoe UI", 10F);
-            lblDefensaEnemigo.Location = new Point(251, 565);
+            lblDefensaEnemigo.Location = new Point(251, 515);
             lblDefensaEnemigo.Name = "lblDefensaEnemigo";
             lblDefensaEnemigo.Size = new Size(17, 23);
             lblDefensaEnemigo.TabIndex = 7;
@@ -796,7 +800,7 @@ namespace juegoRPG
             // 
             lblCriticoEnemigo.AutoSize = true;
             lblCriticoEnemigo.Font = new Font("Segoe UI", 10F);
-            lblCriticoEnemigo.Location = new Point(251, 600);
+            lblCriticoEnemigo.Location = new Point(251, 545);
             lblCriticoEnemigo.Name = "lblCriticoEnemigo";
             lblCriticoEnemigo.Size = new Size(17, 23);
             lblCriticoEnemigo.TabIndex = 11;
@@ -806,7 +810,7 @@ namespace juegoRPG
             // 
             lblPocionesEnemigo.AutoSize = true;
             lblPocionesEnemigo.Font = new Font("Segoe UI", 10F);
-            lblPocionesEnemigo.Location = new Point(251, 635);
+            lblPocionesEnemigo.Location = new Point(251, 575);
             lblPocionesEnemigo.Name = "lblPocionesEnemigo";
             lblPocionesEnemigo.Size = new Size(17, 23);
             lblPocionesEnemigo.TabIndex = 8;
@@ -815,10 +819,10 @@ namespace juegoRPG
             // btnAtacarEnemigo
             // 
             btnAtacarEnemigo.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnAtacarEnemigo.Location = new Point(251, 691);
+            btnAtacarEnemigo.Location = new Point(251, 610);
             btnAtacarEnemigo.Margin = new Padding(3, 4, 3, 4);
             btnAtacarEnemigo.Name = "btnAtacarEnemigo";
-            btnAtacarEnemigo.Size = new Size(171, 61);
+            btnAtacarEnemigo.Size = new Size(171, 50);
             btnAtacarEnemigo.TabIndex = 9;
             btnAtacarEnemigo.Text = "Atacar";
             btnAtacarEnemigo.UseVisualStyleBackColor = true;
@@ -827,10 +831,10 @@ namespace juegoRPG
             // btnPocionEnemigo
             // 
             btnPocionEnemigo.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnPocionEnemigo.Location = new Point(434, 691);
+            btnPocionEnemigo.Location = new Point(434, 610);
             btnPocionEnemigo.Margin = new Padding(3, 4, 3, 4);
             btnPocionEnemigo.Name = "btnPocionEnemigo";
-            btnPocionEnemigo.Size = new Size(171, 61);
+            btnPocionEnemigo.Size = new Size(171, 50);
             btnPocionEnemigo.TabIndex = 10;
             btnPocionEnemigo.Text = "Usar poción";
             btnPocionEnemigo.UseVisualStyleBackColor = true;
@@ -841,7 +845,7 @@ namespace juegoRPG
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(28, 28, 32);
-            ClientSize = new Size(1321, 924);
+            ClientSize = new Size(1321, 757);
             Controls.Add(grpJugador);
             Controls.Add(grpEnemigo);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -932,7 +936,7 @@ namespace juegoRPG
         private Button btnAtacarEnemigo;
         private Button btnPocionEnemigo;
         private Button btnNuevaPartida;
-        private Button btnInventarioJugador1;
+        private Button btnInventarioJugador;
         private Button btnInventarioEnemigo;
         private ListBox lstInventarioJugador;
         private ListBox lstInventarioEnemigo;

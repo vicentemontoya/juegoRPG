@@ -1,10 +1,8 @@
-using System.Drawing.Text;
-
 namespace juegoRPG
 {
     public partial class Form1 : Form
     {
-
+        // ----------------- Estado de la partida -----------------
 
         private Personaje? jugador;
         private Personaje? enemigo;
@@ -16,21 +14,16 @@ namespace juegoRPG
         private bool partidaEnCurso = false;
         private int numeroDeTurno = 0;
 
-
+        // Se ponen en true al crear cada personaje y vuelven a false al terminar la pelea,
+        // asi la siguiente partida exige crear a los dos de nuevo.
         private bool jugadorListo = false;
         private bool enemigoListo = false;
-        // cambios Benja inventario
-        private Inventario mochila = new Inventario();
 
-        private Item pocionVida = new Item(
-            "Poción de vida", "Consumible", 50, 3
-        );
+        // ----------------- Inventario -----------------
 
-        private Item anilloPoder = new Item(
-            "Anillo de poder", "Accesorio", 10, 1
-        );
-        private object inventarioJugador;
-        private object inventarioEnemigo;
+        private readonly Inventario mochila = new Inventario();
+        private readonly Item pocionVida = new Item("Poción de vida", "Consumible", 50, 3);
+        private readonly Item anilloPoder = new Item("Anillo de poder", "Accesorio", 10, 1);
 
         public Form1()
         {
@@ -40,19 +33,13 @@ namespace juegoRPG
             PrepararDeslizadores();
             ActualizarBotones();
 
-            // cambios Benja inventario
             mochila.AgregarItem(pocionVida);
             mochila.AgregarItem(anilloPoder);
-            // cambios Benja inventario
             lstInventarioJugador.Visible = false;
             lstInventarioEnemigo.Visible = false;
-
-
-
-
         }
 
-
+        // ----------------- Preparacion -----------------
 
         private void PrepararCombos()
         {
@@ -587,10 +574,29 @@ namespace juegoRPG
             btnCrearJugador.Enabled = !partidaEnCurso;
             btnCrearEnemigo.Enabled = !partidaEnCurso;
             btnEnemigoAzar.Enabled = !partidaEnCurso;
-        
+        }
 
+        // ----------------- Inventario -----------------
 
+        private void btnInventarioJugador_Click(object sender, EventArgs e)
+        {
+            AlternarInventario(lstInventarioJugador);
+        }
+
+        private void btnInventarioEnemigo_Click(object sender, EventArgs e)
+        {
+            AlternarInventario(lstInventarioEnemigo);
+        }
+
+        /// <summary>Muestra u oculta la lista y la rellena con los objetos de la mochila.</summary>
+        private void AlternarInventario(ListBox lista)
+        {
+            lista.Items.Clear();
+            foreach (Item item in mochila.Objetos)
+            {
+                lista.Items.Add($"{item.Nombre} x{item.Cantidad}");
             }
+            lista.Visible = !lista.Visible;
         }
     }
-    
+}
