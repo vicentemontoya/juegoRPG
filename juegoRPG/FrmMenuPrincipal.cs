@@ -25,7 +25,7 @@ namespace juegoRPG
         private void MostrarPortada()
         {
             string ruta = Path.Combine(AppContext.BaseDirectory,
-                                       ImagenesPersonaje.Carpeta, "menu", "portada.png");
+                                       ImagenesPersonaje.Carpeta, "menu", "portada.jpg");
 
             if (!File.Exists(ruta))
             {
